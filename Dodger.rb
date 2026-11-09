@@ -15,22 +15,18 @@ class Game < Gosu::Window
         @move_spd = 5
         @current_move_spd = @move_spd
         @move_buttons_pressed = 0
-
-        @fireball_width = 15    # Kombinera dessa till en array senare (kanske)
-        @fireball_heigth = 15   # Kombinera dessa till en array senare (kanske)
-        @fireball_universal_spd = 3
-        @fireball_variation_pos = 0     # Hur stor variation ska spawn positionen utanför skärmen ha, högre siffror = mer variation (Kanske tar bort senare)
-        @fireball_variation_size = 10    # Hur stor ska storleksvariationen hos elbollarna vara, bas = 15, högre siffror = mer variation
-        @fireball_variation_spd = 0     # Hur stor ska hastigetens variation mellan eldbollarna vara, bas = @fireball_universal_spd, högre siffror = mer variation
-        @fireballs = []
         
+    end
+
+    def spawn_randomizer
+
     end
 
     def spawn_fireball_left_side
         fireball_size = Gosu.random(30 - @fireball_variation_size/2, 30 + @fireball_variation_size/2)
         fireball_pos_x = Gosu.random(@fireball_variation_pos*-1, 0)
         fireball_pos_y = Gosu.random(0, height - @fireball_heigth)
-        fireball_spd_x = @fireball_universal_spd
+        fireball_spd_x = @fireball_universal_spd 
         fireball_spd_y = 0
         deletion_threshold = @screen_size[0] + @fireball_width
 
@@ -87,7 +83,7 @@ class Game < Gosu::Window
 
         @fireballs.delete_if do |fireball|
             if fireball[:x] > fireball[:thresh]
-                spawn_fireball_left_side
+                
                 true
             else
                 false
