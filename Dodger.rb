@@ -1,4 +1,5 @@
 require "gosu"
+require_relative "fireball"
 
 class Game < Gosu::Window
     def initialize
@@ -15,7 +16,7 @@ class Game < Gosu::Window
         @move_spd = 5
         @current_move_spd = @move_spd
         @move_buttons_pressed = 0
-        
+        @fireballs = [Fireball.new]
     end
 
     def spawn_randomizer
@@ -77,25 +78,24 @@ class Game < Gosu::Window
         end
 
         @fireballs.each do |fireball|
-            fireball[:x] += fireball[:spd_x]
-            fireball[:y] += fireball[:spd_y]
+           fireball.update
         end
 
-        @fireballs.delete_if do |fireball|
-            if fireball[:x] > fireball[:thresh]
+        # @fireballs.delete_if do |fireball|
+        #     if fireball[:x] > fireball[:thresh]
                 
-                true
-            else
-                false
-            end
-        end
+        #         true
+        #     else
+        #         false
+        #     end
+        # end
     end
 
     def draw
         Gosu.draw_rect(@dodger_x, @dodger_y, @dodger_width, @dodger_height, Gosu::Color::BLUE)
 
         @fireballs.each do |fireball|
-            Gosu.draw_rect(fireball[:x], fireball[:y], fireball[:size]/2, fireball[:size]/2, Gosu::Color::RED)
+            fireball.draw
         end
     end
 end
