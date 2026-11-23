@@ -16,11 +16,7 @@ class Game < Gosu::Window
         @move_spd = 5
         @current_move_spd = @move_spd
         @move_buttons_pressed = 0
-        @fireballs = [Fireball.new]
-    end
-
-    def spawn_randomizer
-
+        @fireballs = [Fireball.new(@dodger_x, @dodger_y)]
     end
 
     def spawn_fireball_left_side
@@ -59,10 +55,10 @@ class Game < Gosu::Window
 #    end
 
     def update
-        (@dodger_x -= @current_move_spd; @move_buttons_pressed += 1) if Gosu.button_down?(Gosu::KB_LEFT)
-        (@dodger_x += @current_move_spd; @move_buttons_pressed += 1) if Gosu.button_down?(Gosu::KB_RIGHT)
-        (@dodger_y += @current_move_spd; @move_buttons_pressed += 1) if Gosu.button_down?(Gosu::KB_DOWN)
-        (@dodger_y -= @current_move_spd; @move_buttons_pressed += 1) if Gosu.button_down?(Gosu::KB_UP)
+        (@dodger_x -= @current_move_spd; @move_buttons_pressed += 1) if Gosu.button_down?(Gosu::KB_A)
+        (@dodger_x += @current_move_spd; @move_buttons_pressed += 1) if Gosu.button_down?(Gosu::KB_D)
+        (@dodger_y += @current_move_spd; @move_buttons_pressed += 1) if Gosu.button_down?(Gosu::KB_S)
+        (@dodger_y -= @current_move_spd; @move_buttons_pressed += 1) if Gosu.button_down?(Gosu::KB_W)
 
         #if @dodger_x != width - @dodger_width || @dodger_y != height - @dodger_height  --- Detta kan jag rafinera senare, men tanken är att hastigheten inte ska sänkas ifall dodger är tryckt mot kanten
         if @move_buttons_pressed > 1 then @current_move_spd = @move_spd*0.7071; else @current_move_spd = @move_spd; end #*0.7071 gör att hypotenusan blir samma som jag vill att katetrarna ska vara
@@ -74,7 +70,7 @@ class Game < Gosu::Window
         @dodger_y = @dodger_y.clamp(0, height - @dodger_height)
 
         if Gosu.button_down?(Gosu::KB_SPACE)
-            spawn_fireball_left_side
+            @fireballs << Fireball.new(@dodger_x, @dodger_y) #Skickar med spelarens position
         end
 
         @fireballs.each do |fireball|
@@ -89,11 +85,13 @@ class Game < Gosu::Window
         #         false
         #     end
         # end
+
     end
 
     def draw
         Gosu.draw_rect(@dodger_x, @dodger_y, @dodger_width, @dodger_height, Gosu::Color::BLUE)
 
+        
         @fireballs.each do |fireball|
             fireball.draw
         end
